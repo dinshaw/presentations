@@ -1,0 +1,75 @@
+<p>To a developer, operations can seem overwhelming, mysterious, and sometimes just boring. ‘DevOps’ is everywhere, but what people are referring to? Is it tools? Is it culture? Is it something one can learn?</p>
+
+<p>The answer is yes.</p>
+
+<h2 id="how_did_we_get_into_this_mess">How did we get into this mess?</h2>
+<blockquote>
+  <p>At the dawn of the computer age, there was no distinction between dev and ops. If you developed, you operated. You mounted the tapes, you flipped the switches on the front panel, you rebooted when things crashed [...]. Dev and ops started to separate in the '60s, when programmer/analysts dumped boxes of punch cards into readers, and "computer operators" [...] scurried around mounting tapes [...]. The operators pulled printouts from line printers and shoved them in labeled cubbyholes, where you got your output filed under your last name [...].  The arrival of minicomputers in the 1970s and PCs in the '80s broke down the wall between mainframe operators and users, leading to the system and network administrators of the 1980s and '90s. That was the birth of modern "IT operations" culture[...].</p>
+
+  <small>
+    <a href='http://radar.oreilly.com/2012/06/what-is-devops.html'>What is DevOps?, Mike-Loukides</a>
+  </small>
+
+</blockquote>
+<h2 id="where_did_devops_come_from">Where did DevOps come from?</h2>
+
+<p>2007 Ghent, Belgium, Patrick Dubois was making an effort to work in every capacity that an IT contractor could. Professional experience in both development and operations gave him a clear view of a conflict of interests within all established IT infrastructure:</p>
+
+<p><em>Development’s job is to introduce change. Operation’s job is to keep the site stable and fast.</em></p>
+
+<p>Dubois is credited with informally inciting the DevOps community by initiating conversation around this paradox.</p>
+<figure style='float: right; margin: 0 0 10px 10px;'>
+  <image alt='Spock  Scotty' src='/assets/images/devops/spock-scotty.jpg' style='height: 200px;' />
+  <figcaption>Slide from Flickr: Dev vs Ops</figcaption>
+</figure>
+<p>Fast-forward to <a href="http://velocityconf.com/velocity2009">2009 at O’riliey’s Velocity Conf</a> and the now famous talk: <a href="http://www.youtube.com/watch?v=LdOe18KhtT4">10+ Deploys Per Day: Dev and Ops Cooperation at Flickr</a>. John Allspaw (operations) and Paul Hammond (development) were the first to publicly call out the rift between dev and ops. We, as an industry, had created two job silos with contradictory goals. An ‘us vs them’ mentality had created mistrust and disrespect between dev and ops, and it was self-perpetuating: the better each side did at their job, the worse they made things for the other. Allspaw &amp; Hammond described what they needed to solve this problem with a single slide:</p>
+<image alt='DevOps' src='/assets/images/devops/dev-ops-ops-dev.jpg' style='height: 200px;' />
+<p>Sadly, Patrick Dubois was not able to attend Velocity Conf ‘09. But while lamenting his situation over social media, friends suggested that he hold <em>his own</em> conf. So he did, and <a href="http://www.devopsdays.org/events/2009-ghent/">DevOps Days 2009</a> was born. The conference included <em><em>Introducitng Kanban in Operations</em></em>, <em><em>Continuous integration pipelines and deployment</em></em>, and <em><em>Building agile infrastructure with Puppet</em></em>, all familiar concepts today, but ground breaking at the time. DevOps Days was a hot topic on Twitter where the ‘Days’ was dropped, the term coined, and the movement galvanized.</p>
+
+<p><strong>DevOps stood out from the best-practices of the time because</strong>, instead of being another vendor-to-the-enterprise-set’s million dollar solution, this was <em>from practitioners, for practitioners</em>. DevOps was a grassroots movement against legacy tools and culture. It was not a spec, a product, a standard, or a job title. It was a lot of smart people collaborating on a complex set of common problems.</p>
+<hr />
+<h2 id="whats_the_problem">What’s the problem?</h2>
+
+<p>The problem that DevOps addresses, to sum it up, is the hand-off from Dev to Ops. When developers ‘throw’ their code over the proverbial wall to Ops, and it breaks, the cliché response is ‘Well, it worked on my machine… <em>it must be your fault</em>’. When software works in one place (dev environment) and not in another (test, stage, prod, etc) people get defensive, tensions rise, and cooperation becomes harder just when we need it most.</p>
+
+<p>Our software gets more complex every day. The more complex our software gets, the more fragility creeps into our systems and, to quote <a href="http://www.realgenekim.me/">Gene Kim</a>:</p>
+<blockquote cite='http://www.youtube.com/watch?v=disjFj4ruHg'>
+  <em>"Critical systems cannot be fragile."</em>
+
+  <small>
+    Gene Kim, a DevOps evangelist, gives his <a href='http://www.youtube.com/watch?v=disjFj4ruHg'>Why We Need DevOps Now</a> talk all over the place. If you haven't seen it live, watch a recording. It is inspiring and informative.
+  </small>
+</blockquote>
+<h2 id="whats_the_solution">What’s the solution?</h2>
+
+<p>At the heart of the DevOps ideal is an acknowledgment that Dev and Ops can no longer be separate responsibilities. Awareness of how code travels from development to production and how it will be deployed must be a part of the process from the start. Developers must understand their production systems, and inevitably own the uptime of the code that they write.</p>
+
+<p>Our healing comes in two forms: Culture, and Tools.</p>
+
+<h2 id="culture">Culture</h2>
+
+<p>Developers will need to learn about their production environment. This learning will likely come from someone in operations. Healing the divide between dev and ops, and fostering communication in the archetypal IT organization is the goal of DevOps culture.</p>
+
+<h2 id="tools">Tools</h2>
+
+<p>There are many tools that can be labeled ‘DevOps’, and many more arrive each day. Victory is not choosing the perfect tool, but implementing common tool-chains across teams. When everyone is using the same tools we achieve transparency across teams. This fosters communication and appreciation of what our colleagues are doing, and ultimately (hopefully!) respect. It also enables us to work with each other with ease. Version control (we use Git), CI (we use Jenkins), and infrastructure automation (we use Puppet) are all good examples of tools that should be common across an organization.</p>
+
+<h2 id="getting_started">Getting Started</h2>
+
+<p><strong>TDD</strong> (skip to Automation if you already do TDD): You can’t automate any part of your code promotion until you can programmatically verify your work.</p>
+
+<p><strong>Automation</strong>: Starting down the read of automation can be daunting. Start with something small. Here are a couple suggestions for noobs:</p>
+
+<ol>
+<li>Make your editor clean trailing whitespace on save</li>
+
+<li>Create a <a href="http://dotfiles.github.io/">.dotfiles</a> repo</li>
+
+<li>Use <a href="http://puppetlabs.com/">Puppet</a> or <a href="http://www.getchef.com/chef/">Chef</a> to automate the configuration of your developer machine</li>
+
+<li>Use <a href="http://www.vagrantup.com/">Vagrant</a> or <a href="https://www.docker.io/">Docker</a> to simulate your production env on your local machine</li>
+</ol>
+
+<p><strong>Have a cup of coffee</strong> with your closest ops person. Make friends, you are on the same team! Ask them about Puppet or Chef or what they do all day.</p>
+
+<p>Much like everything else in the world, if this seems hard at first it will get easier!</p>

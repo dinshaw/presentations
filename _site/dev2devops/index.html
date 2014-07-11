@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Dev to DevOps</title>
+
+    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+    <meta name="author" content="Hakim El Hattab">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/sky.css" id="theme">
+    <link rel="stylesheet" href="css/dev2devops.css">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class='screen-logo'>
+      <div style='position: absolute; left: 20px; bottom: 20px; opacity: 0.5;'>
+        <img src='img/constant-contact-logo.png' width='250'>
+      </div>
+    </div>
+    <div class="reveal">
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section>
+          <h3>Dev to DevOps</h3>
+          <img src='img/the-wall.jpg'>
+        </section>
+
+        <section>
+          <h2>Law of the Instrument</h2>
+          <p>"If all you have is a hammer, everything looks like a nail."</p>
+          <img src='img/hammer.gif'>
+          <p>Abraham Kaplan, 1918-1993 in 1964</p>
+        </section>
+
+        <section>
+          <h2 class='fragment'>Nails are ok.</h2>
+          <img src="img/nail.jpg">
+          <p class='fragment'>I can deal with this...</p>
+        </section>
+
+        <section>
+          <img src="img/gtool.jpg">
+          <h2 class='fragment'>Guitar-tool</h2>
+          <h2 class='fragment'>G'Tool</h2>
+        </section>
+
+        <section>
+          <img src="img/guitar.jpg">
+          <h2 class='fragment'>Guitars are awesome!</h2>
+          <p class='fragment'>I like this problem.</p>
+        </section>
+
+        <section>
+          <img src="img/judge.jpg">
+          <p>Angry Monster?</p>
+        </section>
+
+        <section>
+          <img src="img/judge-computer.gif">
+          <p>How about now?</p>
+        </section>
+
+        <section>
+          <img src="img/judge-computer-2.gif">
+          <p>Now?</p>
+        </section>
+
+          <section>
+          <img src="img/hammers.gif">
+          <p>More than one tool...</p>
+        </section>
+
+        <section>
+          <img src="img/right-tool.jpg">
+          <p>A tool for a big job...</p>
+        </section>
+
+        <section>
+          <img src="img/tools.jpg">
+          <p>A tool for a complicated job...</p>
+        </section>
+
+        <section>
+          <img src="img/bat-belt.jpg">
+          <p>A tool to make our job cool and fun...</p>
+        </section>
+
+        <section>
+          <img src="img/computer.jpg">
+          <h2>DevOps</h2>
+        </section>
+
+        <section>
+          <img src="img/homer.jpg">
+        </section>
+
+        <section>
+          <h2>A Brief History of DevOps</h2>
+        </section>
+
+        <section>
+          <img src="img/colosus.jpg">
+          <h3>Mainframe</h3>
+        </section>
+
+        <section>
+          <img src="img/punch-cards.jpg">
+          <h3>Punch Cards</h3>
+        </section>
+
+        <section>
+          <img src="img/computer.jpg">
+          <h3>Personal Computers</h3>
+        </section>
+
+        <section class='the-wall-goes-up'>
+          <img src="img/the-wall-goes-up.jpg">
+          <h3><span>Users . . .</span> The Wall <span>. . . Operations</span></h3>
+        </section>
+
+        <section>
+          <img src="img/patrick.jpg">
+          <h3>Patrick Dubois</h3>
+          <p>Ghent, Belgium</p>
+        </section>
+
+        <section>
+          <img src="img/velocity-logo.jpg">
+          <h3>Velocity Conference 2009, San Jose</h3>
+          <p>Web Performance &amp; Operations</p>
+        </section>
+
+        <section>
+          <h3>10+ Deploys Per Day:</h3>
+          <h3>Dev and Ops Cooperation at Flickr</h3>
+          <p>John Allspaw and Paul Hammond</p>
+        </section>
+
+        <section>
+          <img src="img/spock-scotty.jpg">
+        </section>
+
+        <section>
+          <img src="img/dev-ops-ops-dev.jpg">
+        </section>
+
+        <section>
+          <img src="img/homer-doh.jpg">
+          <p>Dubois missed it!</p>
+        </section>
+
+        <section>
+          <h2>DevOpsDays 2009</h2>
+          <img src="img/devops-days.jpg">
+        </section>
+
+        <section>
+        <h2>DevOpsDays 2009</h2>
+          <ul>
+            <li class='fragment'>Introducing Kanban in Operations</li>
+            <li class='fragment'>Continuous Integration, Pipelines and Deployment</li>
+            <li class='fragment'>Building Agile Infrastructures with Puppet</li>
+          </ul>
+        </section>
+
+        <section>
+          <h1>#devops</h1>
+        </section>
+
+        <section>
+          <h3>
+            <a href='http://continuousdelivery.com/2012/10/theres-no-such-thing-as-a-devops-team/'>No such thing as a DevOps team</a>
+          </h3>
+            <p>Jez Humble, Co-author of Continuous Delivery</p>
+            <blockquote cite="http://continuousdelivery.com/2012/10/theres-no-such-thing-as-a-devops-team/">
+            [...] the Devops movement addresses the dysfunction that results from organizations composed of functional silos.</p>
+            Thus, creating another functional silo that sits between dev and ops is clearly a poor (and ironic) way to try and solve these problems.
+            </blockquote>
+        </section>
+
+        <section>
+          <h1>#devops</h1>
+        </section>
+
+        <section>
+          <h2>So what, exactly...</h2>
+          <img src='img/hulk.jpg'>
+          <h2>... is the problem??</h2>
+        </section>
+
+        <section>
+          <h3>Why We Need DevOps Now:</h3>
+          <p>A Fourteen Year Study Of High Performing IT Organizations</p>
+          <p>- Gene Kim</p>
+        </section>
+
+        <section>
+          <h3>High Performance Organizations</h3>
+          <ul>
+            <li class='fragment'>Deploy code 30x more frequently</li>
+            <li class='fragment'>Complete deployments 8,000x faster</li>
+            <li class='fragment'>50% fewer failures</li>
+            <li class='fragment'>Recover from failures 12x faster</li>
+          </ul>
+        </section>
+
+        <section>
+          <img src='img/beach-day.jpg'>
+          <h3>The Dream</h3>
+        </section>
+
+        <section>
+          <img src='img/holding-hands.jpg'>
+          <h3>Cooperation &amp; Collaboration</h3>
+        </section>
+
+        <section>
+          <img src='img/culture.jpg'>
+          <h3>Culture...</h3>
+        </section>
+
+        <section>
+          <img src="img/judge.jpg">
+          <h3>Angry Monster</h3>
+        </section>
+
+        <section>
+          <img src='img/forget-culture.jpg'>
+          <h3>F@rget Culture...</h3>
+        </section>
+
+        <section>
+          <img src='img/tools.jpg'>
+          <h3>Give me tools...</h3>
+        </section>
+
+        <section>
+          <img src='img/gtool.jpg'>
+          <h3>G'Tool</h3>
+        </section>
+
+        <section>
+          <img src='img/computer.jpg'>
+          <h3>Common tools</h3>
+        </section>
+
+        <section>
+          <img src='img/tear-down-the-wall.jpg'>
+          <p>We start taking down the wall...</p>
+        </section>
+
+        <section>
+          <p>Danger Zone!</p>
+          <img src='img/danger-zone.jpg'>
+          <blockquote>
+            "You need a culture that keeps pushing into the danger zone, and has the habits that enable you to survive in the danger zone."
+          </blockquote>
+        </section>
+
+        <section>
+          <h3>Scott Cook</h3>
+          <p><a href="http://network.intuit.com/2011/04/20/leadership-in-the-agile-age/">Economist conference 2011</a></p>
+          <p>TurboTax did 165 new-feature experiments in the 3 month tax season</p>
+        </section>
+
+        <section>
+          <img src='img/young-lady.jpg'>
+          <p>What does this look like?</p>
+        </section>
+
+        <section>
+          <img src='img/fff.jpg'>
+          <p>Fail.</p>
+        </section>
+
+        <section>
+          <p>Puppet Manifest</p>
+          <pre>
+            <code class='ruby'>
+              def github(name, version, options = nil)
+                options ||= {}
+                options[:repo] ||= "boxen/puppet-#{name}"
+                mod name, version, :github_tarball => options[:repo]
+              end
+
+              github "gcc",        "1.0.0"
+              github "git",        "1.2.2"
+              github "homebrew",   "1.1.2"
+              github "nginx",      "1.4.0"
+              github "nodejs",     "2.2.0"
+              github "ruby",       "4.1.0"
+              github "stdlib",     "4.0.2", :repo => "puppetlabs/puppetlabs-stdlib"
+              github "sudo",       "1.0.0"
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <img src='img/redis.jpg'>
+          <p>Complete fail.</p>
+        </section>
+
+        <section>
+          <p>Boxen Project Manifest</p>
+          <pre>
+            <code class='ruby'>
+              class projects::trollin {
+                include icu4c
+                include phantomjs
+
+                boxen::project { 'trollin':
+                  dotenv        => true,
+                  elasticsearch => true,
+                  mysql         => true,
+                  nginx         => true,
+                  redis         => true,
+                  ruby          => '1.9.3',
+                  source        => 'boxen/trollin'
+                }
+              }
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <h2><strong>Working</strong> is the new <strong>rich</strong></h2>
+        </section>
+
+        <section>
+          <h3>Puppet: State of DevOps Report</h3>
+          <p>'DevOps' up 50% on Linkedin keyword searches</p>
+        </section>
+
+        <section>
+          <h3>Puppet: What is a DevOps Engineer?</h3>
+          <ul>
+            <li class='fragment'>Coding/Scripting</li>
+            <li class='fragment'>Strong grasp of automation tools</li>
+            <li class='fragment'>Process re-engineering</li>
+            <li class='fragment'>A focus on business outcomes</li>
+            <li class='fragment'>Communication &amp; Collaboration</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>So...</h3>
+          <img src='img/waiting.jpg'>
+          <h3>What are we waiting for?</h3>
+        </section>
+
+        <section>
+          <h3>Overwhelming</h3>
+          <img src='img/overwhelmed.jpg'>
+        </section>
+
+        <section>
+          <h3>First Steps:</h3>
+          <ul>
+            <li class='fragment'>Automate something simple</li>
+              <ul>
+                <li class='fragment'>White space</li>
+                <li class='fragment'>Dev Log rotation</li>
+                <li class='fragment'><a href="http://dotfiles.github.io/">.Dotfiles</a></li>
+              </ul>
+            <li class='fragment'>Automate something not-so-simple</li>
+              <ul>
+                <li class='fragment'>Development machine configuration</li>
+                <li class='fragment'>Production configuration</li>
+                <li class='fragment'>Production AS your dev machine</li>
+              </ul>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Puppet &amp; Chef</h2>
+          <ul>
+            <li class="fragment">Both free! At first, anyway...</li>
+            <li class="fragment">Configuration Management Tool</li>
+            <li class="fragment">Idempotent</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Puppet:</h2>
+          <ul>
+            <li><a href="https://puppetlabs.com/">Puppet Labs</a></li>
+            <li>Has it's own DSL but can be written in Ruby as of v2.6</li>
+            <li><a href="http://forge.puppetlabs.com/">Puppet Forge</a></li>
+            <li>Intro talk: <a href='http://vimeo.com/61172067'>Managing an Army of Laptops with Puppet</a></li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Boxen</h2>
+          <p><a href='http://boxen.github.com/'>http://boxen.github.com/</a></p>
+          <pre>
+            <code class='ruby'>
+              class people::jbarnette {
+                include emacs   # requires emacs module in Puppetfile
+                include sparrow # requires sparrow module in Puppetfile
+
+                $home     = "/Users/${::luser}"
+                $my       = "${home}/my"
+                $dotfiles = "${my}/dotfiles"
+
+                repository { $dotfiles:
+                source  => 'jbarnette/dotfiles',
+                require => File[$my]
+                }
+              }
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <h2>Chef</h2>
+          <ul>
+            <li><a href='http://www.opscode.com/chef/'>Opscode</a></li>
+            <li>Written in Ruby</li>
+            <li><a href="https://github.com/opscode-cookbooks">Cookbooks</a></li>
+            <li>Server vs Solo</li>
+            <li>Tools for developing &amp; testing</li>
+            <li>Tutorials introduce Vagrant and Virtual Box</li>
+            <li>Intro talk: <a href='http://www.youtube.com/watch?v=ZC91gZv-Uao'>TDDing tmux</a></li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>T.D.D.</h2>
+          <div class="fragment">
+            <blockquote>
+              "If you tell the truth, you don't have to remember anything."
+            </blockquote>
+            <small class="author">- Mark Twain</small>
+          </div>
+          <p class='fragment'>Dev and Test are no longer seperable</p>
+          <p class='fragment'>Not doing TDD? You will never get to CD</p>
+        </section>
+
+        <section>
+          <h2>What we need from Ops</h2>
+          <ul>
+            <li class='fragment'>One button environment</li>
+            <li class='fragment'>One button deploy</li>
+          </ul>
+        </section>
+        <section>
+          <h2>You build it; you run it.</h2>
+        </section>
+
+        <section>
+          <h2>Google SRE</h2>
+          <p class='fragment'>Hand-off Readiness Review</p>
+          <ul>
+            <li class='fragment'>Types/Frequency of defects</li>
+            <li class='fragment'>Maturity of monitoring</li>
+            <li class='fragment'>Release process</li>
+          </ul>
+        </section>
+
+        <section>
+          <h1>Pair up!</h1>
+        </section>
+
+        <section>
+          <h2><a href="http://techblog.netflix.com/2012/07/chaos-monkey-released-into-wild.html">Netflix: Chaos Monkey</a></h2>
+          <p>April 21st, 2011 Amazon Web Service outage</p>
+          <p>Netfilx maintained availability</p>
+        </section>
+
+        <section>
+          <h2><a href="https://blog.twitter.com/2010/murder-fast-datacenter-code-deploys-using-bittorrent">Twitter Murder!</a></h2>
+          <p class='fragment'>40 minute to  12 seconds!</p>
+        </section>
+
+        <section>
+          <h2><a href="http://www.youtube.com/watch?v=-LxavzqLHj8">ChatOps at Github</a></h2>
+          <p>Automating common operational tasks with Hu-Bot</p>
+          <img src='img/hu-bot.jpg'>
+        </section>
+
+        <section>
+          <h3>
+            <a href='http://assets.en.oreilly.com/1/event/60/Velocity%20Culture%20Presentation.pdf'>Amazon @ O'rily Velocity Conf. 2011</a>
+          </h3>
+          <ul>
+            <li class='fragment'>A deploy every 11.6 seconds</li>
+            <li class='fragment'>Max deployments per hour: 10,000</li>
+            <li class='fragment'>30,000 hosts simultaneously receiving a deployment</li>
+          </ul>
+        </section>
+
+        <section class='links'>
+          <ul>
+            <li><a href="http://www.devopsdays.org/">DevOpsDays</a></li>
+            <li><a href='http://velocityconf.com/velocity2009'>Velocity Conference 2009, San Jose</a></li>
+            <li><a href='http://velocityconference.blip.tv/file/2284377/'>10+ Deploys Per Day: Dev and Ops Cooperation at Flickr</a></li>
+            <li><a href='http://continuousdelivery.com/2012/10/theres-no-such-thing-as-a-devops-team/'>No such thing as a DevOps team</a></li>
+            <li><a href='http://www.youtube.com/watch?v=disjFj4ruHg'>Why We Need DevOps Now</a></li>
+            <li><a href='http://info.puppetlabs.com/2013-state-of-devops-report.html'>State of DevOps 2013 - Puppet Report</a></li>
+            <li><a href="http://network.intuit.com/2011/04/20/leadership-in-the-agile-age/">Scott Cook on TurboTax @ Economist conference 2011</a></li>
+            <li><a href="http://dotfiles.github.io/">.Dotfiles</a></li>
+            <li><a href="http://docs.puppetlabs.com/learning/">Learning Puppet</a></li>
+            <li><a href="http://forge.puppetlabs.com/">Puppet Forge</a></li>
+            <li><a href='http://boxen.github.com/'>Boxen</a></li>
+            <li><a href="http://vimeo.com/61172067">Boxen presentation: Managing an army of laptops</a></li>
+            <li><a href='http://www.opscode.com/chef/'>Opscode</a></li>
+            <li><a href="http://docs.opscode.com/">Learning Chef</a></li>
+            <li><a href="https://github.com/opscode-cookbooks">Chef Cookbooks</a></li>
+            <li><a href='http://www.youtube.com/watch?v=ZC91gZv-Uao'>Chef intro: TDDing tmux</a></li>
+            <li><a href="http://techblog.netflix.com/2012/07/chaos-monkey-released-into-wild.html">Netflix: Chaos Monkey</a></li>
+            <li><a href="https://blog.twitter.com/2010/murder-fast-datacenter-code-deploys-using-bittorrent">Twitter Murder!</a></li>
+            <li><a href="http://www.youtube.com/watch?v=-LxavzqLHj8">ChatOps at Github</a></li>
+            <li><a href="http://assets.en.oreilly.com/1/event/60/Velocity%20Culture%20Presentation.pdf">Amazon: A deploy every 11 seconds slides</a></li>
+          </ul>
+        </section>
+
+        <section>
+          <p>Dev to DevOps</p>
+          <img src='img/the-wall.jpg'>
+          <p>Dinshaw Gobhai | <a href="mailto:dgobhai@constantcontact.com">dgobhai@constantcontact.com</a></p>
+        </section>
+
+        </div>
+      </div>
+      <script src="lib/js/head.min.js"></script>
+      <script src="js/reveal.min.js"></script>
+
+      <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          // { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          // { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+          // { src: 'plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
+          // { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+
+      </script>
+    </body>
+  </head>
+</html>

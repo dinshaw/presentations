@@ -1,0 +1,247 @@
+<p>An introduction to Chef through automating the setup of a osx developer workstation.</p>
+
+<h2 id="the_goal">The Goal</h2>
+
+<p>Automate the setup of my osx developer workstation. I do mostly Rails work, but the techniques in this post should enable you to use Chef to install any tool-set you need.</p>
+
+<h2 id="why_write_another_post_about_this">Why write another post about this?</h2>
+
+<p>After reading <a href="#related_articles">a few posts</a> on workstation setup with Chef, it still took me a day of trial and error to get things working. Chef is complicated even when you know how to use it. I wanted to provide a easy-to-follow introductory tutorial.</p>
+
+<h2 id="chef_is_hard_to_learn">Chef is hard to learn</h2>
+
+<p>Everything you want to do with Chef can be accomplished more than one way. Due to Chef’s versatility, best practices can be difficult to discern. This, IMO, is the main reason for the steep learning curve. You can describe things in Ruby or JSON. You can point Chef at a node, a role, or some JSON. You can override attributes in a node, a role, or a recipe, in either Ruby or JSON. I chose what I think is an intuitive path : point Chef at a node that includes a single role that contains our configuration. There are many other ways this could be accomplished, but for simplicity I intentionally avoid acknowledging them in this tutorial.</p>
+
+<h2 id="why_chef_over_puppet">Why Chef over Puppet?</h2>
+
+<p>I set out to find the shortest path to setting up my mac. I started with Puppet and <a href="http://boxen.github.com/">Boxen</a>, then I tried Chef Server, then switched back to Puppet, but without Boxen this time. Then Chef with <a href="https://github.com/pivotal-sprout/sprout-wrap">Pivotal’s Sporut Wrap</a>, then, finally plain-old Chef-solo. The deciding factor probably boils down to the fact that the existing tutorials for setting up a workstation with Chef are better than the ones for Puppet.</p>
+
+<h2 id="getting_started">Getting started</h2>
+
+<p>Before we can use Chef we need to have Ruby, and XCode’s DeveloperTools installed. OSX ships with ruby so we just need to install DeveloperTools.</p>
+<div class='highlight'><pre><code class='console'><span class='gp'>$</span> xcode-select --install
+</code></pre></div>
+<p>Install Chef as a gem</p>
+<div class='highlight'><pre><code class='console'><span class='gp'>$</span> gem install chef
+</code></pre></div>
+<p>The <a href="https://github.com/opscode/chef">Chef gem</a> installs multiple command line tools. The two we need are Knife and Chef-Solo. Confirm they are installed correctly by checking the version number :</p>
+<div class='highlight'><pre><code class='console'><span class='gp'>$</span> knife -v
+<span class='go'>Chef: xx.x.x</span>
+<span class='gp'>$</span> chef-solo -v
+<span class='go'>Chef: xx.x.x</span>
+</code></pre></div>
+<p>Now that we have our tools in place, lets create a repo to hold all the Chef files we need to get our dev station working. We can use the Knife tool for this.</p>
+<div class='highlight'><pre><code class='console'><span class='gp'>$</span> knife solo init chef-osx
+<span class='go'>WARNING: No knife configuration file found</span>
+<span class='go'>Creating kitchen...</span>
+<span class='go'>Creating knife.rb in kitchen...</span>
+<span class='go'>Creating cupboards...</span>
+<span class='go'>Setting up Librarian...</span>
+</code></pre></div>
+<p>Now lets take a look in the directory we just created. Read the docs for <a href="http://docs.opscode.com/essentials_repository.html">chef-repo</a> for more info.</p>
+<div class='highlight'><pre><code class='console'><span class='gp'>$</span> <span class='nb'>cd </span>chef-osx
+<span class='gp'>$</span> ls -1a
+<span class='go'>./</span>
+<span class='go'>../</span>
+<span class='go'>.chef/</span>
+<span class='go'>.gitignore</span>
+<span class='go'>Cheffile</span>
+<span class='go'>cookbooks/</span>
+<span class='go'>data_bags/</span>
+<span class='go'>environments/</span>
+<span class='go'>nodes/</span>
+<span class='go'>roles/</span>
+<span class='go'>site-cookbooks/</span>
+</code></pre></div>
+<p>There is one necessary file that our <code>knife</code> command did not create for us, <code>./solo.rb</code>. Create it at the root of your working directory with just one line (we will add more to this file in a minute):</p>
+<div class='highlight'><pre><code class='ruby'><span class='c1'># ./solo.rb</span>
+
+<span class='n'>file_cache_path</span> <span class='s2'>&quot;/Users/</span><span class='si'>#{</span><span class='no'>ENV</span><span class='o'>[</span><span class='s1'>&#39;USER&#39;</span><span class='o'>]</span><span class='si'>}</span><span class='s2'>/chef-solo&quot;</span>
+</code></pre></div>
+<p>The default <code>file_cache_path</code> is <code>/var/chef/cache</code>. This would require us to run <code>chef-solo</code> with <code>sudo</code>, which would complicate our Homebrew install. So we change the directory to one that we own.</p>
+
+<h2 id="package_providers">Package Providers</h2>
+
+<p>Next step, gather the <a href="http://docs.opscode.com/resource_package.html">Package Providers</a> that we need. Package Providers are at the heart of Chef operations. They manage the installation of everything we tell chef to install. The syntax to use a Package Provider looks something like this :</p>
+<div class='highlight'><pre><code class='ruby'><span class='c1'># example only</span>
+
+<span class='n'>package</span> <span class='s2'>&quot;name&quot;</span> <span class='k'>do</span>
+  <span class='n'>some_attribute</span> <span class='s2'>&quot;value&quot;</span> <span class='c1'># see attributes section below</span>
+  <span class='o'>.</span><span class='n'>.</span><span class='o'>.</span>
+  <span class='n'>action</span> <span class='ss'>:action</span> <span class='c1'># see actions section below</span>
+<span class='k'>end</span>
+</code></pre></div>
+<p>There are <a href="http://docs.opscode.com/resource_package.html">Package Providers maintained by Chef</a>, and others maintained by the community. We are going to be using two of OpsCode’s providers : <a href="https://github.com/opscode-cookbooks/homebrew">Homebrew</a>, and <a href="https://github.com/opscode-cookbooks/dmg">DMG</a> and one community maintained provider <a href="https://github.com/chef-osx/mac_os_x">mac_os_x</a></p>
+
+<p>We install Package Providers via their Cookbooks</p>
+
+<h2 id="cookbooks">Cookbooks</h2>
+
+<p>A <a href="http://docs.opscode.com/essentials_cookbooks.html">Cookbook</a> is “the fundamental unit of configuration”. Anyone can write a Cookbook and make it available to the community, but the ones we are using are available at <a href="http://community.opscode.com/cookbooks">OpsCode’s cookbook repository</a>.</p>
+
+<p>Cookbooks can be downloaded and installed manually, but I am using <a href="https://github.com/applicationsonline/librarian-chef">Librarian-Chef</a> to manage Cookbook installation for this exercise. Librarian-Chef is basically a bundler for Cookbooks. Similar to Bundler’s Gemfile, Librarian-Chef uses a Cheffile. Knife already created this file for us. The first line tells Librarian-Chef where to look for Cookbooks, then we add the Cookbooks we are going to use. Our complete <code>./Cheffile</code> file looks like this :</p>
+<div class='highlight'><pre><code class='ruby'><span class='c1'># ./Cheffile</span>
+
+<span class='n'>site</span> <span class='s1'>&#39;http://community.opscode.com/api/v1&#39;</span>
+<span class='n'>cookbook</span> <span class='s1'>&#39;homebrew&#39;</span>
+<span class='n'>cookbook</span> <span class='s1'>&#39;dmg&#39;</span>
+<span class='n'>cookbook</span> <span class='s1'>&#39;mac_os_x&#39;</span>
+</code></pre></div>
+<p>Now we install our Cookbooks by running Librarian-Chef’s command line tool <code>install</code> :</p>
+<div class='highlight'><pre><code class='console'><span class='gp'>$</span> librarian-chef install
+<span class='go'>Installing homebrew</span>
+<span class='go'>Installing mac_os_x</span>
+<span class='go'>Installing dmg</span>
+</code></pre></div>
+<p>Take a look in your <code>./cookbooks</code> directory and you will now see a new folder for each of the Cookbooks that Librarian-Chef installed. Librarian-Chef takes full control of your <code>./cookbooks</code> directory. Do not edit files in this directory, as they will be overwritten the next time you <code>librarian-chef install</code>. For custom Cookbooks we use the <code>./site-cookbooks</code> directory.</p>
+
+<p>Add both these directories to your <code>cookbook_path</code> in <code>./solo.rb</code>. The complete <code>./solo.rb</code> should now look like this :</p>
+<div class='highlight'><pre><code class='ruby'><span class='c1'># ./solo.rb</span>
+
+<span class='n'>file_cache_path</span> <span class='s2'>&quot;/Users/</span><span class='si'>#{</span><span class='no'>ENV</span><span class='o'>[</span><span class='s1'>&#39;USER&#39;</span><span class='o'>]</span><span class='si'>}</span><span class='s2'>/chef-solo&quot;</span>
+
+<span class='n'>cookbook_path</span> <span class='o'>[</span>
+  <span class='no'>File</span><span class='o'>.</span><span class='n'>expand_path</span><span class='p'>(</span><span class='s2'>&quot;../cookbooks&quot;</span><span class='p'>,</span> <span class='bp'>__FILE__</span><span class='p'>),</span>
+  <span class='no'>File</span><span class='o'>.</span><span class='n'>expand_path</span><span class='p'>(</span><span class='s2'>&quot;../site-cookbooks&quot;</span><span class='p'>,</span> <span class='bp'>__FILE__</span><span class='p'>),</span>
+<span class='o'>]</span>
+</code></pre></div>
+<h2 id="run_it">Run it</h2>
+
+<p>We now have everything we need to run Chef-Solo. Let’s give it a try, passing our <code>./solo.rb</code> file as the only argument :</p>
+<div class='highlight'><pre><code class='console'><span class='gp'>$</span> chef-solo -c ./solo.rb
+<span class='go'>Starting Chef Client, version 11.8.2</span>
+<span class='go'>Compiling Cookbooks...</span>
+<span class='go'>Converging 0 resources</span>
+<span class='go'>Chef Client finished, 0 resources updated</span>
+</code></pre></div>
+<p>Chef-solo ran successfully, but it didn’t do anything because we haven’t told it to yet. It is time to describe the <a href="http://docs.opscode.com/chef_overview_nodes.html">node</a> (in this case, our development machine) and what we want installed on it. We do this with JSON in <code>./nodes/node.json</code>. Create the file with :</p>
+<div class='highlight'><pre><code class='js'><span class='c1'>// ./nodes/node.json</span>
+
+<span class='p'>{</span>
+  <span class='s2'>&quot;run_list&quot;</span><span class='o'>:</span> <span class='p'>[</span><span class='s2'>&quot;role[my_workstation]&quot;</span><span class='p'>]</span>
+<span class='p'>}</span>
+</code></pre></div>
+<p>and tell Chef where to find it in <code>solo.rb</code> :</p>
+<div class='highlight'><pre><code class='ruby'><span class='c1'># ./solo.rb</span>
+
+<span class='n'>file_cache_path</span> <span class='s2'>&quot;/Users/</span><span class='si'>#{</span><span class='no'>ENV</span><span class='o'>[</span><span class='s1'>&#39;USER&#39;</span><span class='o'>]</span><span class='si'>}</span><span class='s2'>/chef-solo&quot;</span>
+
+<span class='n'>cookbook_path</span> <span class='o'>[</span>
+  <span class='no'>File</span><span class='o'>.</span><span class='n'>expand_path</span><span class='p'>(</span><span class='s2'>&quot;../cookbooks&quot;</span><span class='p'>,</span> <span class='bp'>__FILE__</span><span class='p'>),</span>
+  <span class='no'>File</span><span class='o'>.</span><span class='n'>expand_path</span><span class='p'>(</span><span class='s2'>&quot;../site-cookbooks&quot;</span><span class='p'>,</span> <span class='bp'>__FILE__</span><span class='p'>),</span>
+<span class='o'>]</span>
+
+<span class='n'>json_attribs</span> <span class='no'>File</span><span class='o'>.</span><span class='n'>expand_path</span><span class='p'>(</span><span class='s2'>&quot;../nodes/node.json&quot;</span><span class='p'>,</span> <span class='bp'>__FILE__</span><span class='p'>)</span>
+</code></pre></div>
+<p>The <code>run_list</code> (<a href="http://docs.opscode.com/knife_node.html">knife run_list</a>) tells Chef what we want to install on this computer. For organizational purposes, all we do in this file is point to a role where we define the specifics of our workstation. Let’s create a <code>my_workstaiton.rb</code> role in the <code>roles</code> directory:</p>
+<div class='highlight'><pre><code class='ruby'><span class='c1'># ./roles/my_workstation.rb</span>
+
+<span class='nb'>name</span> <span class='s1'>&#39;my_workstation&#39;</span>
+<span class='n'>description</span> <span class='s1'>&#39;This role will contain everything I need on my developer workstation.&#39;</span>
+<span class='n'>run_list</span> <span class='o'>[</span><span class='s1'>&#39;recipe[homebrew]&#39;</span><span class='p'>,</span> <span class='s1'>&#39;recipe[dmg]&#39;</span><span class='p'>,</span> <span class='s1'>&#39;recipe[my_apps]&#39;</span><span class='o'>]</span>
+</code></pre></div>
+<p>Chef runs everything in <code>run_list</code> in order. Here we included the Package Providers <code>recipe[homebrew]</code> and <code>recipe[dmg]</code> first so they are available to us in <code>recipe[my_apps]</code>. We haven’t created the <code>my_apps</code> cookbook yet, so lets do that now:</p>
+<div class='highlight'><pre><code class='console'><span class='gp'>$</span> mkdir -p site-cookbooks/my_apps/recipes
+</code></pre></div>
+<p>Create the file a <code>default.rb</code> that tells Chef to install essential tools and apps : Chrome, mysql, redis, rbenv, and ruby-build, ruby-2.1.0, and a dotfiles repo (<a href="http://dotfiles.github.io/">don’t have a dotfiles repo?</a>):</p>
+<div class='highlight'><pre><code class='ruby'><span class='c1'># ./site-cookbooks/my_apps/recipes/default.rb</span>
+
+<span class='n'>dmg_package</span> <span class='s1'>&#39;Google Chrome&#39;</span> <span class='k'>do</span>
+  <span class='n'>dmg_name</span> <span class='s1'>&#39;googlechrome&#39;</span>
+  <span class='n'>source</span>   <span class='s1'>&#39;https://dl-ssl.google.com/chrome/mac/stable/GGRM/googlechrome.dmg&#39;</span>
+  <span class='n'>checksum</span> <span class='s1'>&#39;7daa2dc5c46d9bfb14f1d7ff4b33884325e5e63e694810adc58f14795165c91a&#39;</span>
+  <span class='n'>action</span>   <span class='ss'>:install</span>
+<span class='k'>end</span>
+
+<span class='c1'># defaults to homebrew package provider</span>
+<span class='n'>package</span> <span class='s1'>&#39;mysql&#39;</span> <span class='k'>do</span>
+  <span class='n'>action</span> <span class='ss'>:install</span>
+<span class='k'>end</span>
+
+<span class='n'>package</span> <span class='s1'>&#39;redis&#39;</span> <span class='k'>do</span>
+  <span class='n'>action</span> <span class='ss'>:install</span>
+<span class='k'>end</span>
+
+<span class='n'>package</span> <span class='s1'>&#39;rbenv&#39;</span> <span class='k'>do</span>
+  <span class='n'>action</span> <span class='ss'>:install</span>
+<span class='k'>end</span>
+
+<span class='n'>package</span> <span class='s1'>&#39;ruby-build&#39;</span> <span class='k'>do</span>
+  <span class='n'>action</span> <span class='ss'>:install</span>
+<span class='k'>end</span>
+
+<span class='n'>git</span> <span class='s2'>&quot;/Users/[username]/.dotfiles&quot;</span> <span class='k'>do</span>
+  <span class='n'>repository</span> <span class='s2'>&quot;git://github.com/[username]/dotfiles.git&quot;</span>
+  <span class='n'>reference</span> <span class='s2'>&quot;master&quot;</span>
+  <span class='n'>action</span> <span class='ss'>:sync</span>
+<span class='k'>end</span>
+
+<span class='n'>execute</span> <span class='s1'>&#39;install Ruby&#39;</span> <span class='k'>do</span>
+  <span class='n'>command</span> <span class='s1'>&#39;rbenv install 2.1.0&#39;</span>
+  <span class='n'>not_if</span> <span class='s1'>&#39;rbenv versions | grep 2.1.0&#39;</span>
+<span class='k'>end</span>
+</code></pre></div>
+<p>We are ready to have Chef do some work for us, for a change! Run <code>chef-solo</code> again to see how we are doing :</p>
+<div class='highlight'><pre><code class='console'><span class='gp'>$</span> chef-solo -c ./solo.rb
+
+<span class='go'>Recipe: ...</span>
+</code></pre></div>
+<p>Did everything install correctly? Hope so… Use the above patterns to add any other apps or Homebrew packages you need for your workstation.</p>
+
+<h2 id="system_preferences">System Preferences</h2>
+
+<p>On to our system preferences. All the system preferences for a mac are available on the command line through the <code>defaults</code> command. To see the settings that control the Dock :</p>
+<div class='highlight'><pre><code class='console'><span class='gp'>$</span> defaults <span class='nb'>read </span>com.apple.dock
+</code></pre></div>
+<p>There are a ton of settings available to you. The mac_os_x cookbook we installed provides an easy way for us to set them, and gives us a list of the more useful ones. Open <code>./cookbooks/mac_os_x/attributes/default.rb</code>. The only thing it does is set up an empty hash for us to override and give us some suggestions for useful ways to use it :</p>
+<div class='highlight'><pre><code class='ruby'><span class='c1'># ...</span>
+
+<span class='n'>node</span><span class='o'>.</span><span class='n'>default</span><span class='o'>[</span><span class='s1'>&#39;mac_os_x&#39;</span><span class='o'>][</span><span class='s1'>&#39;settings&#39;</span><span class='o'>]</span> <span class='o'>=</span> <span class='p'>{}</span>
+
+<span class='c1'>#######################################################################</span>
+<span class='c1'>#</span>
+<span class='c1'># These commented attributes are provided as examples, though you are</span>
+<span class='c1'># encouraged to set attributes from a role, rather than modifying the</span>
+<span class='c1'># local cookbook directly.</span>
+<span class='c1'># ...</span>
+</code></pre></div>
+<p>Read the commented out settings and decide which ones you want to set for your workstation. Below I have added <code>recipe[mac_os_x::settings]</code> to the <code>run_list</code>, and then provided finder settings for the recipe to use. Remember that the settings hash is empty by default, so it won’t do anything unless we give it some values.</p>
+<div class='highlight'><pre><code class='ruby'><span class='nb'>name</span> <span class='s1'>&#39;my_workstation&#39;</span>
+<span class='n'>description</span> <span class='s1'>&#39;This role will contain everything I need as a developer.&#39;</span>
+<span class='n'>run_list</span> <span class='o'>[</span>
+  <span class='s1'>&#39;recipe[homebrew]&#39;</span><span class='p'>,</span>
+  <span class='s1'>&#39;recipe[dmg]&#39;</span><span class='p'>,</span>
+  <span class='s1'>&#39;recipe[my_apps]&#39;</span><span class='p'>,</span>
+  <span class='s1'>&#39;recipe[mac_os_x::settings]&#39;</span>
+<span class='o'>]</span>
+<span class='n'>default_attributes</span><span class='p'>(</span>
+  <span class='s1'>&#39;mac_os_x&#39;</span> <span class='o'>=&gt;</span> <span class='p'>{</span>
+    <span class='s1'>&#39;settings&#39;</span> <span class='o'>=&gt;</span> <span class='p'>{</span>
+      <span class='s1'>&#39;finder&#39;</span> <span class='o'>=&gt;</span> <span class='p'>{</span>
+        <span class='s1'>&#39;domain&#39;</span> <span class='o'>=&gt;</span> <span class='s1'>&#39;com.apple.finder&#39;</span><span class='p'>,</span>
+        <span class='s1'>&#39;FXPreferredViewStyle&#39;</span> <span class='o'>=&gt;</span> <span class='s1'>&#39;clmv&#39;</span><span class='p'>,</span> <span class='c1'># column view</span>
+        <span class='s1'>&#39;NewWindowTarget&#39;</span> <span class='o'>=&gt;</span> <span class='s1'>&#39;PfHm&#39;</span><span class='p'>,</span> <span class='c1'># home directory</span>
+        <span class='s1'>&#39;RemoveIDiskFromSidebarOnStartup&#39;</span> <span class='o'>=&gt;</span> <span class='kp'>true</span><span class='p'>,</span>
+        <span class='s1'>&#39;ShowExternalHardDrivesOnDesktop&#39;</span> <span class='o'>=&gt;</span> <span class='kp'>true</span><span class='p'>,</span>
+        <span class='s1'>&#39;ShowHardDrivesOnDesktop&#39;</span> <span class='o'>=&gt;</span> <span class='kp'>false</span><span class='p'>,</span>
+        <span class='s1'>&#39;ShowMountedServersOnDesktop&#39;</span> <span class='o'>=&gt;</span> <span class='kp'>true</span><span class='p'>,</span>
+        <span class='s1'>&#39;ShowRemovableMediaOnDesktop&#39;</span> <span class='o'>=&gt;</span> <span class='kp'>true</span><span class='p'>,</span>
+        <span class='s1'>&#39;ShowStatusBar&#39;</span> <span class='o'>=&gt;</span> <span class='kp'>true</span><span class='p'>,</span>
+      <span class='p'>}</span>
+    <span class='p'>}</span>
+  <span class='p'>}</span>
+<span class='p'>)</span>
+</code></pre></div>
+<p>Note the <code>FXPreferredViewStyle</code>. It changes the view for a new finder window. Try changing this setting a couple times to one of the values here :</p>
+<div class='highlight'><pre><code class='text'>Flwv &gt; Cover Flow View
+Nlsv &gt; List View
+clmv &gt; Column View
+icnv &gt; Icon View
+</code></pre></div>
+<p>At this point you should be able to start work on your favorite project.</p>
+
+<h2 id="existing_repo_on_a_new_machine">Existing repo on a new machine</h2>
+
+<ul>
+<li>sudo gem install chef</li>
+</ul>
