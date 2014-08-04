@@ -7,12 +7,12 @@ I'm going to walk through our two-year road from design to full adoption.
 TL;DR :
 Compostite primary keys are amazing
 Don't ues AR, if you're never going to need it
-Careful with loops
+
 Pull requests
 Code reviews
 KISS
 
-But this is more than a story of Rails at scale, its also a story of accuisition and cultural assimilation.
+But this is more than a story of Rails at scale, its also a story of acquisition and cultural assimilation.
 Large team issues:
 ** Not everyone on your team is going to be a rockstar
 ** tech lead will miss something

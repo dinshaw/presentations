@@ -39,11 +39,16 @@ OK
 
 Started writting tests, like we do now to run the tests you have to start up both apps.
 At somepoint we realized that onboarding was becoming a problem.
+launchtl for solr and service-stubs
+Solr - another app
+Mocks - another app
 
 So we consolodated the apps. Huge win.
 Rails forms, etc
 THen we moved from sinatra and artifice to webmock. Huge win number two.
 Everything started feeling like rails dev again
+
+Dropped Solr - we wern't using it right. Raw sql with regexp was way faster, and way more maintainable
 
 Started mapping out a contact, that had many service-addresses, and addresses, and company data until we were like wait a min, this looks like a document.
 So we decided couch would be a perfect fit. We then spent the next three months trying to convince the company that this was a good idea.
@@ -75,4 +80,6 @@ Sadly, I had to keep writing code, so i was not able to just watch and learn, bu
 
 So low-hanging fruit first:
 - WE cleaned up the ruby
+- loops, don't do dumb shit in them
+You can get away with a lot of stupid stuff in ruby, but don't do it in a loop.
 
