@@ -103,7 +103,7 @@ Three
 * Replace JSON
 * People will burnout on the same shit - careful mgrs! - pair up to avoid this
 * What's the biggest value of pair-programming? Company.
-* Benchmarj
+* Benchmark
 * Profile
 
 #### Tom
@@ -111,8 +111,8 @@ Redis runs as a single service per cell. Caching became a bottle neck
 Too much caching led to threads grabbing a db connection and then waiting for redis.
 Careful what you cache! Memcached is multi-threaded, could maybe use that these days.
 
-DB: Composite key optiomized query, then we partititoned (physical sepration by account_id).
-Why wheren't we getting 12 partititons? ask alex!
+DB: Composite key optiomized query, then we partitioned (physical separation by account_id).
+Why wheren't we getting 12 partitions? ask alex!
 
 500 insert - wikipage for import
 
