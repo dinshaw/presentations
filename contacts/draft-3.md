@@ -1,10 +1,22 @@
 # Intro - 30 sec
 Hi my name is ...
-Thanks for coming to Meet the SLAs. The learning tha i'm hoping to share during this talk falls mostly under Rails performance tuning, but there is on general lesson about building for scale, from scratch, that maybe more valuable to me than all the scaling tricks, and that is @don't over architect, or prematurely engineer. In other words don't solve problems that you don't have, even if you "know" you are going to need it later. You never know which way things are going to go, especially with large projects with lots of dependencies.
-To illustrate this, A short summary of our path to the architecture that is now in production starts with four people with a lot of start-up-scale experience trying to figure out where you start when designing for 500k users. We decided on a single page ui-app, and a separate api service. We would consume our own API, thereby driving the development of the API with our own requirements, and eveything would be perfect. And, since we were going straight to and from json, a document store made way more sense than a relational db, so we started writting an ActiveModel esq wrapper for CouchDB. Sounds like a good idea, turns out to be a huge pain in the ass. And it got worse before it got better. THe first pain point was the integration tests. We do tdd, so eventually we got around to integration tests. But when you have separate ui and api, guess what, you can't run your integartion tests with plain old rspec anymore, because you need both services up. You may say "just stub your api" but when both UI and service are under heavy dev, keeping our stubs in sync with our app would have been a full time job. So we added some docs saying pull down both repos, start a api server on 3001, and run the specs.
-Not toooo bad... yet.
-Dev went on, and eventually we swiched from couchDB to Postgres.
-So then a requirement for search arrived on our jira board and, like responsible developers building for heavy use, we added a search engine, Solr. Solr has fairly heavy config and needs to run as a service so...
+Doing rails for ...
+Thanks for coming to Meet the SLAs.
+Most of what i'm going to talk about in Rails preformance but one thing about building for scale
+Don't do it
+To illustrate this, A short summary of our path to the architecture
+single page ui-app, and a separate api service.
+going straight to and from json; started writting an ActiveModel esq wrapper for CouchDB.
+Sounds like a good idea- pretty proud of ourselves and we talked about contribueting back to the community and a lot of other stuff that never happened
+integration tests.
+stubbing not reaolistic
+rails s -p 3001 -e test
+
+Dev went on and we got a call from the database team, who said "wtf?"
+
+Search requirement
+Solr
+
 Now we added to the docs that you had to run a rake task to intsall the solr config, and then fire that up too.
 
 Then we started putting our real integrations in place and these did need to be stubbed, but again, because the integration suite ran in the ui code base, in-process stubs would not be available to the api, so we stood up a sinatra endpoint, and used artifice to redirect the api to stubs.
@@ -14,28 +26,60 @@ Then we started on-boarding people and the error in our ways became very clear.
 Then one day we came into work, consolodated the two apps, put the stubs in the app with webmock, and threw out solr in favor of straight db queries, which, it turns out are way faster anyway.
 
 So there we were back with an almost out-of-the-box Rails setup, and finally we got back on the golden path of easy-ish app development. THe moral of this story is that applications are going to get complex on their own, if they do anyhting at all, and more so if tey have to do it at scale. SO keep it simple.
+
 [costco shopping cart full of mayo?]
 
 So architecture was chose and dev proceeded, and eventually we checeked in with our SLAs.
 44 seconds -> 500ms
 
-Rails Performance
-- Ruby profiling
-* which tools?
-* What did we find
--- db issues
--- app code issues
+- Ruby profiling vs Dtrace
 
-* DB
+DB issues:
+
+  http://blog.bigbinary.com/2013/07/01/preload-vs-eager-load-vs-joins-vs-includes.html
+
+  Preload
+  Preload loads the association data in a separate query.
+  Includes
+  Includes loads the association data in a separate query just like preload.
+  Eager load
+  eager loading loads all association in a single query using LEFT OUTER JOIN.
+
+Ended up hand-rolling, which, thanks to RailsConf talk, can be done with arel
+
+  https://www.youtube.com/watch?v=ShPAxNcLm3o
+
+Cut in half ! still 24p seconds...
+
+DATABASE
+
 - CPK
--- mega-morphic
+- anti-pattern in rails?
+https://github.com/composite-primary-keys/composite_primary_keys
+
+- Multiple-column index vs multiple indexs?
+https://engineering.eventbrite.com/optimizing-a-table-with-composite-primary-keys/
+http://www.percona.com/blog/2014/01/03/multiple-column-index-vs-multiple-indexes-with-mysql-56/
+
 - Partitioning
-* Found bottlenecks
--- Associations
--- CPK
+Cell architecture - Verify your partitinos??
 
+How long now??
 
+- Megamorphic
+https://github.com/composite-primary-keys/composite_primary_keys/blob/master/lib/composite_primary_keys/relation.rb
+- Things that invalidate cache - https://github.com/charliesome/charlie.bz/blob/master/posts/things-that-clear-rubys-method-cache.
 
+So instead of extending the relation, we replaced it with a new, name-spaced ActiveRecord::Relation
+
+Down to 12ms! for the db.... 4seconds for the query...
+
+Contacts selector
+250ms
+
+Serialization
+Don't use activer record
+Use postgres! - http://reefpoints.dockyard.com/2014/05/27/avoid-rails-when-generating-json-responses-with-postgresql.html
 
 -
 80% quote.

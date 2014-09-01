@@ -1,5 +1,5 @@
 
-    some of the bullets are descriptive - setting the scene - others have value and are the talking points
+    some of the bullets are descriptive - setting the scene - others have value ` are the talking points
 
 # Contacts Outline
 
