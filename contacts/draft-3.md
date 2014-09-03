@@ -18,26 +18,45 @@ Search requirement
 Solr
 
 Now we added to the docs that you had to run a rake task to intsall the solr config, and then fire that up too.
+SSO stubs ... artifice!!
+[slide of setup]
 
-Then we started putting our real integrations in place and these did need to be stubbed, but again, because the integration suite ran in the ui code base, in-process stubs would not be available to the api, so we stood up a sinatra endpoint, and used artifice to redirect the api to stubs.
-We then we had to expose an api endpoint to do data setup.
-At this point we added solr to LaunchAgents so it was kind of set-it-and-forget-it. So since we already had a dependancy for a java server, we wared up our service stubs and made them a java service too. So to review : to run the test suite we needed the app, the api, solr, the stubs all wired up and talking to each other correctly.
-Then we started on-boarding people and the error in our ways became very clear.
-Then one day we came into work, consolodated the two apps, put the stubs in the app with webmock, and threw out solr in favor of straight db queries, which, it turns out are way faster anyway.
+Data setup ...
+[slide of setup]
 
-So there we were back with an almost out-of-the-box Rails setup, and finally we got back on the golden path of easy-ish app development. THe moral of this story is that applications are going to get complex on their own, if they do anyhting at all, and more so if tey have to do it at scale. SO keep it simple.
+LaunchAgents...
 
-[costco shopping cart full of mayo?]
+Onboarding sux...
 
-So architecture was chose and dev proceeded, and eventually we checeked in with our SLAs.
+Consolidate apps...
+Get rid of solr...
+
+Architecture - jruby
+
+[slide of cell]
+
+Torquebox
+
+No redis
+
+Out-of-the-box Rails setup
+
+The moral of this story is that applications are going to get complex on their own, if they do anyhting at all, and more so if tey have to do it at scale. SO keep it simple.
+
 44 seconds -> 500ms
 
-- Ruby profiling vs Dtrace
+- Ruby profiling vs Dtrace vs Benchmarks
+
+[Benchmark slide] - Newrelic
 
 DB issues:
+  N+1 - http://guides.rubyonrails.org/active_record_querying.html#eager-loading-associations
+
+  [domain slide] to show channel
 
   http://blog.bigbinary.com/2013/07/01/preload-vs-eager-load-vs-joins-vs-includes.html
 
+  [slide]
   Preload
   Preload loads the association data in a separate query.
   Includes
@@ -61,16 +80,16 @@ https://github.com/composite-primary-keys/composite_primary_keys
 https://engineering.eventbrite.com/optimizing-a-table-with-composite-primary-keys/
 http://www.percona.com/blog/2014/01/03/multiple-column-index-vs-multiple-indexes-with-mysql-56/
 
+- Megamorphic
+https://github.com/composite-primary-keys/composite_primary_keys/blob/master/lib/composite_primary_keys/relation.rb
+- Things that invalidate cache - https://github.com/charliesome/charlie.bz/blob/master/posts/things-that-clear-rubys-method-cache.
+So instead of extending the relation, we replaced it with a new, name-spaced ActiveRecord::Relation
+[slide of PR]
+
 - Partitioning
 Cell architecture - Verify your partitinos??
 
 How long now??
-
-- Megamorphic
-https://github.com/composite-primary-keys/composite_primary_keys/blob/master/lib/composite_primary_keys/relation.rb
-- Things that invalidate cache - https://github.com/charliesome/charlie.bz/blob/master/posts/things-that-clear-rubys-method-cache.
-
-So instead of extending the relation, we replaced it with a new, name-spaced ActiveRecord::Relation
 
 Down to 12ms! for the db.... 4seconds for the query...
 
@@ -81,9 +100,8 @@ Serialization
 Don't use activer record
 Use postgres! - http://reefpoints.dockyard.com/2014/05/27/avoid-rails-when-generating-json-responses-with-postgresql.html
 
+Ruby optimizations
+Page caching
 -
 80% quote.
-
-THis talk is about my experience building a Rails app that had to support 500k paying users at launch. A volume that your average rails app never hit in their lifetimes.
-Looking back on this three year journey that was the acquisition of the start-up I was contracting at to 100% of traffic being routed to our new app, I can loosely classify my learning under two headings :  Rails performance, and Building For Scale.
 
