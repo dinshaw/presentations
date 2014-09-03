@@ -64,31 +64,30 @@ Three
 - Megamorphic problem
 
     class Foo
-      def f
+      def do_something
       end
     end
 
     class Bar
-      def f
-      end
-    end
-
-    def hot_code_path(x)
-      x.f # inline cache (polymorphic), eventually JITs
-      case x
-      when Foo
-      when Foo + <<unique class>>
-      else
-        # long style lookup
+      def do_something
       end
     end
 
     a = [Foo.new, Bar.new] * 1000
-
-    a.each {|o|
-      def o.other; end
-      hot_code_path(o) #  inline cached, eventually JITs
+    a.each { |obj|
+      # inline cached, eventually JITs
+      obj.do_something
     }
+
+    # inline cached code path
+    case obj.class
+    when Foo
+      Foo.do_something
+    when Bar
+      Bar.do_something
+    else
+      lookup ...
+    end
 
 
 - Jruby hit compiling worse than ruby because its more aggressive

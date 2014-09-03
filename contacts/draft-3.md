@@ -48,6 +48,11 @@ The moral of this story is that applications are going to get complex on their o
 - Ruby profiling vs Dtrace vs Benchmarks
 
 [Benchmark slide] - Newrelic
+  def count
+    CtctBenchmark.realtime "persons_controller_count" do
+      render status: 200, json: ::V2Translator.count_persons(params)
+    end
+  end
 
 DB issues:
   N+1 - http://guides.rubyonrails.org/active_record_querying.html#eager-loading-associations
@@ -58,14 +63,16 @@ DB issues:
 
   [slide]
   Preload
-  Preload loads the association data in a separate query.
+  Preload loads the association data in a separate query. always generates two sql
   Includes
-  Includes loads the association data in a separate query just like preload.
+  Includes attempts to run two queries, but switches to a 'LEFT OUTER JOIN'
   Eager load
   eager loading loads all association in a single query using LEFT OUTER JOIN.
 
 Ended up hand-rolling, which, thanks to RailsConf talk, can be done with arel
+  LEFT INNER JOINS
 
+RailsConf 2014 -Advanced aRel: When ActiveRecord Just Isn't Enough
   https://www.youtube.com/watch?v=ShPAxNcLm3o
 
 Cut in half ! still 24p seconds...
@@ -81,10 +88,58 @@ https://engineering.eventbrite.com/optimizing-a-table-with-composite-primary-key
 http://www.percona.com/blog/2014/01/03/multiple-column-index-vs-multiple-indexes-with-mysql-56/
 
 - Megamorphic
+
+    class Foo
+      def do_something
+      end
+    end
+
+    class Bar
+      def do_something
+      end
+    end
+
+    a = [Foo.new, Bar.new] * 1000
+    a.each { |obj|
+      # inline cached, eventually JITs
+      obj.do_something
+    }
+
+    # inline cached code path
+    case obj.class
+    when Foo
+      Foo.do_something
+    when Bar
+      Bar.do_something
+    else
+      lookup ...
+    end
+
 https://github.com/composite-primary-keys/composite_primary_keys/blob/master/lib/composite_primary_keys/relation.rb
+def add_cpk_support
+      class << self
+        include CompositePrimaryKeys::ActiveRecord::Batches
+        include CompositePrimaryKeys::ActiveRecord::Calculations
+        include CompositePrimaryKeys::ActiveRecord::FinderMethods
+        include CompositePrimaryKeys::ActiveRecord::QueryMethods
+https://github.com/strmpnk/composite_primary_keys/commit/21e081359eaa60a6b67bb1b999dbe4da23149f47
+
+class CompositePrimaryKeys::ActiveRecord::Relation < ActiveRecord::Relation
+  include CompositePrimaryKeys::ActiveRecord::Batches
+  include CompositePrimaryKeys::ActiveRecord::Calculations
+  include CompositePrimaryKeys::ActiveRecord::FinderMethods
+  include CompositePrimaryKeys::ActiveRecord::QueryMethods
+
+class ActiveRecord::Relation
+  ...
+  def self.new( klass, ... )
+    klass.composite? ?
+      CompositePrimaryKeys::ActiveRecord::Relation.new : self
+  end
+
 - Things that invalidate cache - https://github.com/charliesome/charlie.bz/blob/master/posts/things-that-clear-rubys-method-cache.
-So instead of extending the relation, we replaced it with a new, name-spaced ActiveRecord::Relation
-[slide of PR]
+
+http://en.wikipedia.org/wiki/Inline_caching
 
 - Partitioning
 Cell architecture - Verify your partitinos??
