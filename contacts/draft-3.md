@@ -160,3 +160,8 @@ Page caching
 -
 80% quote.
 
+1B / 500 = 2M
+2M / 44s = 88M seconds
+88M seconds = 24444.4 hours or 2.8 years
+
+@ 250ms, it took 5.8 days
