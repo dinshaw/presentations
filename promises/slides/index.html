@@ -21,6 +21,7 @@
 
 <link rel="stylesheet" href="css/reveal-ck.css">
 
+<link rel="stylesheet" href="css/promise.css">
 
 <!-- If the query includes 'print-pdf', use the PDF print sheet -->
 <script>
@@ -39,57 +40,81 @@
   <div class="slides">
     <section>
 
-<h2>i <img class="emoji" title=":heart:" alt=":heart:" src="https://assets-cdn.github.com/images/icons/emoji/heart.png" align="absmiddle"> reveal.js</h2>
+<h2>i <img class="emoji" title=":heart:" alt=":heart:" src="https://assets-cdn.github.com/images/icons/emoji/heart.png" align="absmiddle"> Promises in Ruby</h2>
+
+<p>Promises we can keep.</p>
+
+<p>"I promise that there will be no cat pics."</p>
+
+<p>Dinshaw Gobhai | <a href="mailto:dgobhai@constantcontact.com">dgobhai@constantcontact.com</a></p>
+
+<p><a href="https://github.com/tallfriend" class="user-mention">@tallfriend</a></p>
+
+<p><a href="github.com/dinshaw/promises-in-ruby">github.com/dinshaw/promises-in-ruby</a></p>
+
+<p><a href="github.com/dinshaw/promises">github.com/dinshaw/promises</a></p>
 
 </section>
 <section>
+<section>
 
-<h2>This is your</h2>
+<h2>Promises, eh?</h2>
+
+<p>"direct correspondence between synchronous and asynchronous functions"</p>
+
+<p><a href="https://www.youtube.com/watch?v=V2Q13hzTGmA">Callbacks, Promises, and Coroutines</a> - Domenic Denicola</p>
+
+<p><a href="https://blog.domenic.me/youre-missing-the-point-of-promises/">You’re missing the point of Promises</a> - Domenic Denicola</p>
+
+<p><a href="https://promisesaplus.com/">Promises/A+</a> - Lots of very smart people</p>
+
+</section>
+</section>
+<section>
+
+<h2>Promises</h2>
+
+<p class="fragment">* Return a promise, immediately</p>
+
+<p class="fragment">* Executes</p>
+
+<p class="fragment">* Fulfills or Rejects</p>
+
+<p class="fragment">* Chainable / "thenable"</p>
+
+</section>
+<section>
+<section>
+
+<h2>Fulfill and Reject</h2>
+<pre><code class="ruby">    Promise.new { |fulfill, reject|
+      if something
+        fulfill.call something.value
+      else
+        reject.call something.error
+      end
+    }
+</code></pre>
+</section>
+</section>
+<section>
+
+<h2>Thanks!</h2>
+
+<p>Brian Mitchel and Mike Davis for explaining this stuff to me.
+Jed Northbridge for his Reavel-CK gem that I used to make this presentation</p>
+
+</section>
+<section>
+<section>
+
+<h2>Thoughts</h2>
 
 <ul>
-<li>presentation</li>
-<li>content</li>
-<li>in a single file! dude!</li>
+<li>EM</li>
 </ul>
 
 </section>
-<section>
-
-<ol>
-<li>markdown</li>
-<li>html</li>
-<li>erb</li>
-<li>haml</li>
-<li>slim</li>
-<li>ruby</li>
-</ol>
-
-</section>
-<section>
-
-<h2>
-<img class="emoji" title=":zap:" alt=":zap:" src="https://assets-cdn.github.com/images/icons/emoji/zap.png" align="absmiddle"> LiveReload is builtin <img class="emoji" title=":zap:" alt=":zap:" src="https://assets-cdn.github.com/images/icons/emoji/zap.png" align="absmiddle">
-</h2>
-
-</section>
-<section>
-
-<h2>See also:</h2>
-
-<p><a href="http://jedcn.github.io/reveal-ck/">http://jedcn.github.io/reveal-ck/</a></p>
-
-</section>
-<section>
-
-<h2>Questions? Problems?</h2>
-
-<p>Let me know, <a href="https://github.com/jedcn" class="user-mention">@jedcn</a></p>
-
-</section>
-<section>
-
-<h1>Thanks!</h1>
-
 </section>
 
   </div>
