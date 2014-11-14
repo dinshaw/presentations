@@ -32,15 +32,64 @@
 </section>
 <section>
 
-<h2>Promises</h2>
+<h3>Getting cat pics with JS</h3>
+<pre><code class="js">getCat("Garfield", function(err, cat) {
+  if (err) {
+    getCatError(err)
+  } else {
+    getCatPics(cat, function(err, pics) {
+      if (err) {
+        getCatPicsError(err)
+      } else {
+        showCatPic(pics)
+...
+</code></pre>
+</section>
+<section>
 
-<p class="fragment">* Return a promise, immediately</p>
+<h3>Getting cat pics with a Promise</h3>
+<pre><code class="js">getCat("Garfield")
+  .then(getCatPics, getCatError)
+  .then(showCatPic, getCatPicsError)
+</code></pre>
+</section>
+<section>
+<section>
 
-<p class="fragment">* Executes</p>
+<h2>In regular ruby</h2>
+<pre><code class="ruby">  ...
+    cat = get_cat 'Garfield'
+    pics = get_cat_pics cat
+    show_cat_pic pics.first
+  rescue GetCat::Error =&gt; e
+    handle_get_cat_error
+  rescue GetCatPics::Error =&gt; e
+    handle_get_cat_pics_error
+  ...
+</code></pre>
+</section>
+<section>
 
-<p class="fragment">* Fulfills or Rejects</p>
+<h2>Ruby Promise</h2>
+<pre><code class="ruby">  get_cat('Garfield').
+    then(get_cat_pics, handle_get_cat_error).
+    then(show_cat_pic, handle_get_cat_pics_error)
 
-<p class="fragment">* Chainable / "thenable"</p>
+</code></pre>
+</section>
+<section>
+
+<h2>Ruby Promise</h2>
+<pre><code class="ruby">  Promise.start(Cat.get('Garfield')).
+    then(get_cat_pics, handle_get_cat_error).
+    then(show_cat_pic, handle_get_cat_pics_error)
+
+</code></pre>
+</section>
+</section>
+<section>
+
+<h2>Code</h2>
 
 </section>
 <section>
@@ -59,13 +108,25 @@
 </section>
 <section>
 
+<h2>Promises Recap</h2>
+
+<p class="fragment">* Return a promise, immediately</p>
+
+<p class="fragment">* Fulfills or Rejects</p>
+
+<p class="fragment">* Chainable / "thenable"</p>
+
+</section>
+<section>
+<section>
+
 <h2>Thanks!</h2>
 
 <p>Brian Mitchel and Mike Davis for explaining this stuff to me.
 Jed Northbridge for his Reavel-CK gem that I used to make this presentation</p>
 
 </section>
-<section>
+</section>
 <section>
 
 <h2>Thoughts</h2>
@@ -74,5 +135,4 @@ Jed Northbridge for his Reavel-CK gem that I used to make this presentation</p>
 <li>EM</li>
 </ul>
 
-</section>
 </section>

@@ -21,13 +21,75 @@ Dinshaw Gobhai | [dgobhai@constantcontact.com](mailto:dgobhai@constantcontact.co
 [You’re missing the point of Promises](https://blog.domenic.me/youre-missing-the-point-of-promises/) - Domenic Denicola
 
 [Promises/A+](https://promisesaplus.com/) - Lots of very smart people
+
 ***
 
-## Promises
-<p class='fragment'>* Return a promise, immediately</p>
-<p class='fragment'>* Executes</p>
-<p class='fragment'>* Fulfills or Rejects</p>
-<p class='fragment'>* Chainable / "thenable"</p>
+### Getting cat pics with JS
+
+```js
+getCat("Garfield", function(err, cat) {
+  if (err) {
+    getCatError(err)
+  } else {
+    getCatPics(cat, function(err, pics) {
+      if (err) {
+        getCatPicsError(err)
+      } else {
+        showCatPic(pics)
+...
+```
+
+---
+
+### Getting cat pics with a Promise
+
+```js
+getCat("Garfield")
+  .then(getCatPics, getCatError)
+  .then(showCatPic, getCatPicsError)
+```
+
+***
+
+## In regular ruby
+
+```ruby
+  ...
+    cat = get_cat 'Garfield'
+    pics = get_cat_pics cat
+    show_cat_pic pics.first
+  rescue GetCat::Error => e
+    handle_get_cat_error
+  rescue GetCatPics::Error => e
+    handle_get_cat_pics_error
+  ...
+```
+
+---
+
+## Ruby Promise
+
+```ruby
+  get_cat('Garfield').
+    then(get_cat_pics, handle_get_cat_error).
+    then(show_cat_pic, handle_get_cat_pics_error)
+
+```
+
+---
+
+## Ruby Promise
+
+```ruby
+  Promise.start(Cat.get('Garfield')).
+    then(get_cat_pics, handle_get_cat_error).
+    then(show_cat_pic, handle_get_cat_pics_error)
+
+```
+
+***
+
+## Code
 
 ***
 
@@ -42,6 +104,13 @@ Dinshaw Gobhai | [dgobhai@constantcontact.com](mailto:dgobhai@constantcontact.co
       end
     }
 ```
+
+***
+
+## Promises Recap
+<p class='fragment'>* Return a promise, immediately</p>
+<p class='fragment'>* Fulfills or Rejects</p>
+<p class='fragment'>* Chainable / "thenable"</p>
 
 ***
 
