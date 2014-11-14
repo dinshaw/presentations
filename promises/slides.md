@@ -36,7 +36,7 @@ getCat("Garfield", function(err, cat) {
         getCatPicsError(err)
       } else {
         showCatPic(pics)
-...
+  ...
 ```
 
 ---
@@ -44,14 +44,14 @@ getCat("Garfield", function(err, cat) {
 ### Getting cat pics with a Promise
 
 ```js
-getCat("Garfield")
-  .then(getCatPics, getCatError)
-  .then(showCatPic, getCatPicsError)
+1| getCat("Garfield")
+2|   .then(getCatPics, getCatError)
+3|   .then(showCatPic, getCatPicsError)
 ```
 
 ***
 
-## In regular ruby
+## In familiar ruby
 
 ```ruby
   ...

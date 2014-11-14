@@ -82,21 +82,21 @@
         getCatPicsError(err)
       } else {
         showCatPic(pics)
-...
+  ...
 </code></pre>
 </section>
 <section>
 
 <h3>Getting cat pics with a Promise</h3>
-<pre><code class="js">getCat("Garfield")
-  .then(getCatPics, getCatError)
-  .then(showCatPic, getCatPicsError)
+<pre><code class="js">1| getCat("Garfield")
+2|   .then(getCatPics, getCatError)
+3|   .then(showCatPic, getCatPicsError)
 </code></pre>
 </section>
 <section>
 <section>
 
-<h2>In regular ruby</h2>
+<h2>In familiar ruby</h2>
 <pre><code class="ruby">  ...
     cat = get_cat 'Garfield'
     pics = get_cat_pics cat
